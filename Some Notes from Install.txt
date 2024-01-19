@@ -1,0 +1,46 @@
+Some notes from Install
+
+1 - first thing I did was go to values file and swap out for my name, and I created a new repo in Github called
+    badraoul/tmc-tap-quickstart
+
+2- PAT = Personal Access Token in Github - have to created a new one
+    here is directions: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+    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
+    Note that need to add username (baraoul) and the PAT goes in password section
+
+3.  errors when trying to run tanzu tmc ekscluster create
+    - the posted commands should be in /generated/ folder
+    - also need to change credential name and I suspect arn 
+    arn:aws:iam::820320248141:role/clusterlifecycle.16038872847243851874.eks.tmc.cloud.vmware.com
+    - in the values.yml file, swap out identity "820320248141" at the first part of arn and 
+    also search in console>IAM>roles for "control-plane" to get the second number value, in my
+    case "16038872847243851874"  e.g control-plane.16038872847243851874.eks.tmc.cloud.vmware.com
+    - I did a find and replace my  "820320248141" for Will's "074754820263" value
+    - also "16038872847243851874" replaces Will's "5733506324977179756"
+
+4. next problem in creating clusters -> the subnets listed in the values.yaml file do not exist in my instance
+   
+    NOTE:  I realized after reading the manual that I was supposed to create a VPC before I created teh EKS account
+            So i created a new VPC with 2 public and 2 private subnets
+            https://docs.vmware.com/en/VMware-Tanzu-Mission-Control/services/tanzumc-using/GUID-5708F04E-7EA3-495D-A484-FD6DB7AA8356.html
+            was able to create clusters and nodepools for tap-run
+
+5. associating the oidc cluster required adding the region
+    eksctl utils associate-iam-oidc-provider --cluster tap-run --approve    <failed>
+    eksctl utils associate-iam-oidc-provider --cluster tap-run -r us-west-2 --approve  <worked>
+
+6. Used badraoul.com as my domain.  I checked it on GoDaddy first.  HAve to remember to swap out for line
+    ZONE_ID=$(aws route53 list-hosted-zones-by-name | jq --arg name "tapmc.<your-domain>." -r '.HostedZones | .[] | select(.Name=="\($name)") | .Id')
+    NOTE:  I kept getting an error running this commands: "parse error: Invalid numeric literal at line 1, column 12"
+    I eventually just looked it up in console and manually created the ZONE_ID variable
+
+    My nameservers are the following
+        ns-851.awsdns-42.net.
+        ns-1365.awsdns-42.org.
+        ns-1966.awsdns-53.co.uk.
+        ns-303.awsdns-37.com. 
+
+7.  I found it easier to rename the folders at "infra-gitops>clusters" using Finder
+    The big thing to change is the TMC AWS account name
+
+8. 
