@@ -6,7 +6,7 @@ Some notes from Install
 2- PAT = Personal Access Token in Github - have to created a new one
     here is directions: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
     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
-    Note that need to add username (baraoul) and the PAT goes in password section
+    Note that need to add username (badraoul) and the PAT goes in password section
 
 3.  errors when trying to run tanzu tmc ekscluster create
     - the posted commands should be in /generated/ folder
@@ -43,4 +43,4 @@ Some notes from Install
 7.  I found it easier to rename the folders at "infra-gitops>clusters" using Finder
     The big thing to change is the TMC AWS account name
 
-8. 
+8.  I forgot to git commit to my new repo - couldn't get the kustomize working,...
